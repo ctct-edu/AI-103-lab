@@ -1,0 +1,4 @@
+python-dotenv==1.2.4
+azure-identity==1.27.0
+azure-ai-translation-text==1.0.1
+azure-cognitiveservices-speech==1.48.2

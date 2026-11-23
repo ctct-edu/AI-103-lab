@@ -1,0 +1,4 @@
+python-dotenv==1.2.4
+playsound3==3.3.2
+azure-identity==1.27.0
+openai==3.49.0
