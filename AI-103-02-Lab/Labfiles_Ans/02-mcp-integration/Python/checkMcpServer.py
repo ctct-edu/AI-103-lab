@@ -12,7 +12,7 @@
 import asyncio
 import json
 from mcp import ClientSession
-from mcp.client.streamable_http import streamablehttp_client
+from mcp.client.streamable_http import streamable_http_client
 
 # 調べたいMCPサーバーのURLをここに指定してください
 MCP_SERVER_URL = "https://learn.microsoft.com/api/mcp"
@@ -20,7 +20,8 @@ MCP_SERVER_URL = "https://learn.microsoft.com/api/mcp"
 
 async def main():
     # MCPサーバーへ接続（HTTPストリーミング）
-    async with streamablehttp_client(MCP_SERVER_URL) as (read, write, get_session_id):
+    # mcp 2.x では streamable_http_client が (read, write) の2要素を返す
+    async with streamable_http_client(MCP_SERVER_URL) as (read, write):
         # セッションを作成
         async with ClientSession(read, write) as session:
             # セッションを初期化（サーバーとのハンドシェイク）
@@ -33,8 +34,9 @@ async def main():
             print(f"利用可能なツール数: {len(tools_result.tools)}\n")
 
             for tool in tools_result.tools:
-                # inputSchema は dict（JSON Schema形式）なので整形して出力
-                schema_str = json.dumps(tool.inputSchema, indent=2, ensure_ascii=False)
+                # input_schema は dict（JSON Schema形式）なので整形して出力
+                # （mcp 2.x では inputSchema → input_schema に名称変更）
+                schema_str = json.dumps(tool.input_schema, indent=2, ensure_ascii=False)
                 # 各行を字下げして見やすくする
                 schema_indented = "\n".join(f"    {line}" for line in schema_str.splitlines())
 
